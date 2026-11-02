@@ -170,7 +170,6 @@ function initEnvelope() {
     });
   }
 }
-}
 
 /* ============================================================================
  * 5. MÚSICA DE FUNDO (EXCLUSIVA DOS PAIS - APENAS PLAY/PAUSE/MUDO PARA O CONVIDADO)
@@ -397,7 +396,6 @@ function initPollForm() {
   }
 
   const STORAGE_KEY_ALREADY_VOTED = 'cha_revelacao_voted_permanently_v2';
-  const STORAGE_KEY_CHOICE = 'cha_revelacao_voted_choice';
 
   function lockVotingButtons(votedChoice) {
     btnBoy.disabled = true;
