@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chá Revelação • Jorge Tales ou Kiara Maria | Alexandre & Nyara</title>
+  
+  <!-- Meta tags para prévia elegante no WhatsApp e redes sociais -->
+  <meta name="description" content="Venha descobrir conosco o segredo mais doce das nossas vidas! Convite especial de Chá Revelação de Alexandre e Nyara.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Chá Revelação • Menino ou Menina? ✨">
+  <meta property="og:description" content="Jorge Tales ou Kiara Maria? Venha celebrar e descobrir esse momento inesquecível com Alexandre e Nyara!">
+  <meta property="og:site_name" content="Chá Revelação">
+  <meta name="theme-color" content="#FDFCFA">
+
+  <!-- Fontes do Google: Cormorant Garamond (títulos refinados) e Inter (legibilidade limpa) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ELEMENTO DE ÁUDIO (Caminho configurado no script.js pelos pais) -->
+  <audio id="bg-music" src="assets/Here%20Comes%20The%20Sun%20(Remastered%202009)%20-%20The%20Beatles.mp3" preload="auto" loop></audio>
+
+  <!-- BOTÃO FLUTUANTE DE CONTROLE DE MÚSICA (Apenas Pausar / Retomar) -->
+  <button id="music-toggle" class="music-btn" aria-label="Controlar música de fundo" title="Música">
+    <div class="music-icon-wrapper">
+      <svg class="music-icon music-playing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"></path>
+        <circle cx="6" cy="18" r="3"></circle>
+        <circle cx="18" cy="16" r="3"></circle>
+      </svg>
+      <svg class="music-icon music-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+        <path d="M9 9v9"></path>
+        <path d="M9 5l12-2v7"></path>
+        <circle cx="6" cy="18" r="3"></circle>
+        <circle cx="18" cy="16" r="3"></circle>
+      </svg>
+    </div>
+    <span class="music-bars" aria-hidden="true">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </span>
+  </button>
+
+  <!-- CANVAS DE CONFETE SUAVE -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- TELA DE ABERTURA: ENVELOPE ELEGANTE -->
+  <aside id="envelope-overlay" class="envelope-overlay" aria-label="Envelope do Convite">
+    <div class="envelope-container" id="envelope-card" role="button" tabindex="0" aria-label="Toque para abrir o convite">
+      
+      <!-- Detalhes de fundo flutuantes no envelope -->
+      <div class="envelope-floating-decorations" aria-hidden="true">
+        <svg class="decor-sparkle pos-1" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="12,0 15,9 24,12 15,15 12,24 9,15 0,12 9,9" />
+        </svg>
+        <svg class="decor-sparkle pos-2" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="12,0 15,9 24,12 15,15 12,24 9,15 0,12 9,9" />
+        </svg>
+        <svg class="decor-cloud pos-3" viewBox="0 0 64 36" fill="currentColor">
+          <path d="M14 30h36a10 10 0 0 0 2-19.8 14 14 0 0 0-26-4A11 11 0 0 0 14 30z"/>
+        </svg>
+      </div>
+
+      <!-- Estrutura do Envelope Físico -->
+      <div class="envelope-wrapper">
+        <div class="envelope-flap-back"></div>
+        <div class="envelope-letter-peek">
+          <span class="letter-monogram">A & N</span>
+          <span class="letter-sub">Um momento especial</span>
+        </div>
+        <div class="envelope-pocket">
+          <!-- Selo delicado com iniciais ou ponto de interrogação -->
+          <div class="envelope-seal">
+            <span class="seal-icon">?</span>
+          </div>
+        </div>
+        <div class="envelope-flap"></div>
+      </div>
+
+      <div class="envelope-instruction">
+        <span class="tap-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </span>
+        <span class="tap-text">Toque para abrir o convite</span>
+        <span class="tap-sub">Alexandre &amp; Nyara convidam</span>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL DO CONVITE -->
+  <main id="main-content" class="main-wrapper">
+
+    <!-- SEÇÃO HERO -->
+    <header class="hero-section reveal">
+      
+      <!-- SVGs decorativos sutis flutuando no fundo -->
+      <div class="hero-ambience" aria-hidden="true">
+        <!-- Nuvem esquerda -->
+        <svg class="ambient-svg ambient-cloud-1" viewBox="0 0 64 36">
+          <path d="M14 30h36a10 10 0 0 0 2-19.8 14 14 0 0 0-26-4A11 11 0 0 0 14 30z"/>
+        </svg>
+        <!-- Balão Azul Suave -->
+        <svg class="ambient-svg ambient-balloon-blue" viewBox="0 0 32 46">
+          <path d="M16 2 C7 2 2 9 2 18 C2 27 12 33 15 36 L15 40 L17 40 L17 36 C20 33 30 27 30 18 C30 9 25 2 16 2 Z"/>
+          <path d="M16 40 Q 14 43 16 46" stroke="currentColor" fill="none" stroke-width="1.5"/>
+        </svg>
+        <!-- Balão Rosa Suave -->
+        <svg class="ambient-svg ambient-balloon-rose" viewBox="0 0 32 46">
+          <path d="M16 2 C7 2 2 9 2 18 C2 27 12 33 15 36 L15 40 L17 40 L17 36 C20 33 30 27 30 18 C30 9 25 2 16 2 Z"/>
+          <path d="M16 40 Q 18 43 16 46" stroke="currentColor" fill="none" stroke-width="1.5"/>
+        </svg>
+        <!-- Estrelas cintilantes -->
+        <svg class="ambient-svg ambient-star-1" viewBox="0 0 24 24">
+          <polygon points="12,0 15,9 24,12 15,15 12,24 9,15 0,12 9,9" />
+        </svg>
+        <svg class="ambient-svg ambient-star-2" viewBox="0 0 24 24">
+          <polygon points="12,0 15,9 24,12 15,15 12,24 9,15 0,12 9,9" />
+        </svg>
+      </div>
+
+      <div class="hero-top-badge">
+        <span class="badge-line"></span>
+        <span class="badge-text">Chá Revelação</span>
+        <span class="badge-line"></span>
+      </div>
+
+      <h1 class="hero-question">Menino ou Menina?</h1>
+
+      <!-- Ponto focal elegante: o "?" com auréola e estrelinhas flutuantes -->
+      <div class="focal-question-container">
+        <div class="focal-glow" aria-hidden="true"></div>
+        <div class="focal-halo" aria-hidden="true">
+          <span class="orb-dot blue-dot"></span>
+          <span class="orb-dot rose-dot"></span>
+          <span class="orb-dot gold-dot"></span>
+        </div>
+        
+        <div class="focal-glyph-box">
+          <span class="focal-question-mark">?</span>
+        </div>
+
+        <div class="focal-baby-icons" aria-hidden="true">
+          <!-- Chupetinha / Ursinho sutil -->
+          <svg class="baby-float-icon left-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+            <!-- Chupeta delicada -->
+            <circle cx="16" cy="18" r="8" stroke-width="1.5"/>
+            <path d="M16 10 V4" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="16" cy="4" r="3" stroke-width="1.5"/>
+            <path d="M12 18 A4 4 0 0 0 20 18" stroke-width="1.5"/>
+          </svg>
+
+          <!-- Ursinho delicado -->
+          <svg class="baby-float-icon right-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+            <!-- Cabeça do ursinho -->
+            <circle cx="16" cy="18" r="10" stroke-width="1.5"/>
+            <!-- Orelhas -->
+            <circle cx="9" cy="9" r="4" stroke-width="1.5"/>
+            <circle cx="23" cy="9" r="4" stroke-width="1.5"/>
+            <!-- Focinho -->
+            <ellipse cx="16" cy="20" rx="4" ry="3" stroke-width="1.5"/>
+            <circle cx="16" cy="19" r="1.2" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="hero-parents">
+        <p class="parents-intro">Com amor no coração,</p>
+        <p class="parents-names">Alexandre &amp; Nyara</p>
+      </div>
+
+      <div class="hero-date-pill">
+        <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span id="display-hero-date">15 de Novembro de 2026 • 12:00</span>
+      </div>
+
+      <div class="scroll-indicator" aria-hidden="true">
+        <span class="scroll-chevron"></span>
+      </div>
+    </header>
+
+
+    <!-- SEÇÃO: CONTAGEM REGRESSIVA -->
+    <section class="section countdown-section reveal" aria-labelledby="countdown-title">
+      <div class="section-header">
+        <div class="section-icon-badge" aria-hidden="true">
+          <!-- Relógio / Estrela do tempo em SVG -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <h2 id="countdown-title" class="section-title">Contagem Regressiva</h2>
+        <p class="section-subtitle">Cada segundo nos aproxima desta grande revelação</p>
+      </div>
+
+      <div class="countdown-card" id="countdown-wrapper">
+        <div class="countdown-grid">
+          <div class="countdown-unit">
+            <div class="unit-box">
+              <span class="unit-number" id="cd-days">00</span>
+            </div>
+            <span class="unit-label">Dias</span>
+          </div>
+
+          <div class="countdown-separator">:</div>
+
+          <div class="countdown-unit">
+            <div class="unit-box">
+              <span class="unit-number" id="cd-hours">00</span>
+            </div>
+            <span class="unit-label">Horas</span>
+          </div>
+
+          <div class="countdown-separator">:</div>
+
+          <div class="countdown-unit">
+            <div class="unit-box">
+              <span class="unit-number" id="cd-minutes">00</span>
+            </div>
+            <span class="unit-label">Minutos</span>
+          </div>
+
+          <div class="countdown-separator">:</div>
+
+          <div class="countdown-unit">
+            <div class="unit-box">
+              <span class="unit-number" id="cd-seconds">00</span>
+            </div>
+            <span class="unit-label">Segundos</span>
+          </div>
+        </div>
+        
+        <p class="countdown-status" id="countdown-status-text">Esperando pelo dia mais doce!</p>
+      </div>
+    </section>
+
+
+    <!-- SEÇÃO: MENSAGEM DOS PAIS -->
+    <section class="section parents-message-section reveal" aria-labelledby="message-title">
+      <div class="message-card">
+        
+        <div class="message-corner-decor left-top" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </div>
+
+        <h2 id="message-title" class="message-title">Nosso Coração Transborda</h2>
+        
+        <p class="message-paragraph">
+          Um novo capítulo das nossas vidas está sendo escrito com todo o carinho e ternura do mundo. 
+          Cada batimento cardíaco ouvido no ultrassom fez o nosso amor multiplicar de uma forma indescritível.
+        </p>
+
+        <p class="message-paragraph">
+          Queremos muito ter você ao nosso lado para partilhar o instante mágico em que descobriremos se o nosso doce bebê será um menino ou uma menina. Sua presença torna tudo ainda mais especial e inesquecível!
+        </p>
+
+        <div class="message-signature">
+          <span class="signature-line" aria-hidden="true"></span>
+          <span class="signature-text">Com todo amor, Alexandre &amp; Nyara</span>
+          <span class="signature-line" aria-hidden="true"></span>
+        </div>
+
+        <!-- Pegadinhas de bebê em SVG -->
+        <div class="baby-footsteps" aria-hidden="true">
+          <svg class="footstep left-foot" viewBox="0 0 24 32" fill="currentColor">
+            <ellipse cx="12" cy="20" rx="7" ry="10"/>
+            <circle cx="6" cy="6" r="2.2"/>
+            <circle cx="10" cy="4" r="2"/>
+            <circle cx="14" cy="4" r="1.8"/>
+            <circle cx="18" cy="5" r="1.6"/>
+            <circle cx="21" cy="7" r="1.3"/>
+          </svg>
+          <svg class="footstep right-foot" viewBox="0 0 24 32" fill="currentColor">
+            <ellipse cx="12" cy="20" rx="7" ry="10"/>
+            <circle cx="18" cy="6" r="2.2"/>
+            <circle cx="14" cy="4" r="2"/>
+            <circle cx="10" cy="4" r="1.8"/>
+            <circle cx="6" cy="5" r="1.6"/>
+            <circle cx="3" cy="7" r="1.3"/>
+          </svg>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- SEÇÃO: OS NOMES ESCOLHIDOS -->
+    <section class="section names-section reveal" aria-labelledby="names-title">
+      <div class="section-header">
+        <h2 id="names-title" class="section-title">Os Nomes Escolhidos</h2>
+        <p class="section-subtitle">Dois nomes repletos de bênção, afeto e significado</p>
+      </div>
+
+      <div class="names-grid">
+        
+        <!-- Cartão Menino -->
+        <div class="name-card boy-card">
+          <div class="card-accent-tag tag-boy">
+            <span class="tag-dot"></span>
+            <span>Se for menino</span>
+          </div>
+
+          <div class="name-icon-wrap icon-boy" aria-hidden="true">
+            <!-- Balãozinho / Ursinho sutil -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+              <circle cx="16" cy="8" r="1.5" fill="currentColor"/>
+              <path d="M9 15c1 1.5 5 1.5 6 0"/>
+            </svg>
+          </div>
+
+          <h3 class="baby-chosen-name" id="display-boy-name">Jorge Tales</h3>
+          <p class="name-desc">Forte, iluminado e muito aguardado com amor.</p>
+        </div>
+
+        <!-- Cartão Menina -->
+        <div class="name-card girl-card">
+          <div class="card-accent-tag tag-girl">
+            <span class="tag-dot"></span>
+            <span>Se for menina</span>
+          </div>
+
+          <div class="name-icon-wrap icon-girl" aria-hidden="true">
+            <!-- Florzinha / Coração sutil -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+
+          <h3 class="baby-chosen-name" id="display-girl-name">Kiara Maria</h3>
+          <p class="name-desc">Doce, radiante e já tão querida por todos nós.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- SEÇÃO: DÊ SEU PALPITE -->
+    <section class="section poll-section reveal" aria-labelledby="poll-title">
+      <div class="poll-card">
+        
+        <div class="section-header">
+          <div class="section-icon-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h2 id="poll-title" class="section-title">Qual é o seu palpite?</h2>
+          <p class="section-subtitle">A intuição nunca falha! Conte para os pais quem você acha que vem aí:</p>
+        </div>
+
+        <form id="poll-form" class="poll-form" onsubmit="return false;">
+          
+          <div class="poll-options-grid" role="radiogroup" aria-label="Escolha seu palpite">
+            
+            <label class="poll-choice-label boy-choice">
+              <input type="radio" name="baby_gender_guess" value="boy" class="poll-radio-input" required>
+              <div class="choice-content">
+                <span class="choice-badge">👦</span>
+                <span class="choice-title">Jorge Tales</span>
+                <span class="choice-sub">Menino</span>
+              </div>
+            </label>
+
+            <label class="poll-choice-label girl-choice">
+              <input type="radio" name="baby_gender_guess" value="girl" class="poll-radio-input">
+              <div class="choice-content">
+                <span class="choice-badge">👧</span>
+                <span class="choice-title">Kiara Maria</span>
+                <span class="choice-sub">Menina</span>
+              </div>
+            </label>
+
+          </div>
+
+          <div class="form-group">
+            <label for="voter-name" class="input-label">Seu Nome / Família:</label>
+            <input type="text" id="voter-name" class="text-input" placeholder="Ex: Titia Fernanda, Vovô Carlos..." required autocomplete="name">
+          </div>
+
+          <!-- Botão que registra o voto localmente na barrinha do convite -->
+          <button type="submit" id="submit-guess-btn" class="btn btn-primary btn-block">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Confirmar Meu Palpite</span>
+          </button>
+        </form>
+
+        <!-- Feedback de Voto Realizado -->
+        <div id="poll-feedback" class="poll-feedback" style="display: none;">
+          <p class="poll-feedback-text">✨ <span id="poll-feedback-name"></span>, seu palpite foi computado!</p>
+        </div>
+
+        <!-- BARRINHA DE VOTAÇÃO (PLACAR DA INTUIÇÃO) -->
+        <div class="poll-results-card" id="poll-results-card">
+          <div class="results-header">
+            <span class="results-title">Placar da Intuição dos Convidados</span>
+            <span class="results-total" id="poll-total-votes">Total: 0 palpites</span>
+          </div>
+
+          <!-- Percentuais e contadores -->
+          <div class="results-labels">
+            <div class="result-team team-boy">
+              <span class="team-name">👦 Jorge Tales</span>
+              <strong class="team-percent" id="boy-percent">50%</strong>
+              <span class="team-count" id="boy-votes-count">(0 votos)</span>
+            </div>
+            <div class="result-team team-girl">
+              <span class="team-name">Kiara Maria 👧</span>
+              <strong class="team-percent" id="girl-percent">50%</strong>
+              <span class="team-count" id="girl-votes-count">(0 votos)</span>
+            </div>
+          </div>
+
+          <!-- Barra de Progresso Bipartida -->
+          <div class="poll-bar-track">
+            <div class="poll-bar-fill boy-fill" id="boy-bar-fill" style="width: 50%;"></div>
+            <div class="poll-bar-fill girl-fill" id="girl-bar-fill" style="width: 50%;"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- SEÇÃO: DETALHES DO EVENTO -->
+    <section class="section event-details-section reveal" aria-labelledby="details-title">
+      <div class="section-header">
+        <h2 id="details-title" class="section-title">Detalhes do Evento</h2>
+        <p class="section-subtitle">Tudo o que você precisa saber para não perder nenhum instante</p>
+      </div>
+
+      <div class="details-card">
+        
+        <!-- Item 1: Data e Hora -->
+        <div class="detail-row">
+          <div class="detail-icon-circle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div class="detail-text-group">
+            <span class="detail-label">Data &amp; Horário</span>
+            <strong class="detail-value" id="display-event-datetime">15 de Novembro de 2026</strong>
+            <span class="detail-sub" id="display-event-time">A partir das 12:00</span>
+          </div>
+        </div>
+
+        <div class="detail-divider"></div>
+
+        <!-- Item 2: Local -->
+        <div class="detail-row">
+          <div class="detail-icon-circle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </div>
+          <div class="detail-text-group">
+            <span class="detail-label">Localização</span>
+            <strong class="detail-value" id="display-venue-name">Vila Santo Antônio, Km 1</strong>
+            <span class="detail-sub" id="display-venue-address">Ao lado do Restaurante Píer</span>
+          </div>
+        </div>
+
+        <!-- Botões de Ação do Evento: Mapa e Calendário -->
+        <div class="event-action-buttons">
+          <a id="btn-map" href="https://www.google.com/maps?q=-1.6303670406341553,-47.48479080200195&z=17&hl=pt-BR" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <span>Ver no Google Maps</span>
+          </a>
+
+          <button id="btn-calendar" class="btn btn-secondary" type="button">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>Adicionar ao Calendário</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- SEÇÃO: CONFIRMAR PRESENÇA (RSVP) -->
+    <section class="section rsvp-section reveal" aria-labelledby="rsvp-title">
+      <div class="rsvp-card">
+        
+        <div class="rsvp-top-flower" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="16" cy="16" r="4"/>
+            <path d="M16 4 C18 9 18 11 16 12 C14 11 14 9 16 4 Z"/>
+            <path d="M16 28 C18 23 18 21 16 20 C14 21 14 23 16 28 Z"/>
+            <path d="M4 16 C9 18 11 18 12 16 C11 14 9 14 4 16 Z"/>
+            <path d="M28 16 C23 18 21 18 20 16 C21 14 23 14 28 16 Z"/>
+          </svg>
+        </div>
+
+        <h2 id="rsvp-title" class="rsvp-title">Confirmar Presença</h2>
+        <p class="rsvp-description">
+          Sua confirmação é essencial para que possamos organizar cada detalhe com todo conforto e carinho para você e sua família.
+        </p>
+
+        <form id="rsvp-form" class="rsvp-form" onsubmit="return false;">
+          
+          <div class="form-group text-left">
+            <label for="rsvp-guest-name" class="input-label">Seu Nome Completo:</label>
+            <input type="text" id="rsvp-guest-name" class="text-input" placeholder="Ex: Alexandre Silva" required autocomplete="name">
+          </div>
+
+          <!-- SELETOR DE QUANTIDADE DE PESSOAS -->
+          <div class="form-group text-left">
+            <label class="input-label">Quantas pessoas vão com você?</label>
+            <div class="people-counter-wrapper">
+              <button type="button" class="counter-btn" id="btn-counter-minus" aria-label="Diminuir quantidade">−</button>
+              <div class="counter-display">
+                <span id="people-count-number" class="counter-number">1</span>
+                <span class="counter-unit">pessoa(s) no total</span>
+              </div>
+              <button type="button" class="counter-btn" id="btn-counter-plus" aria-label="Aumentar quantidade">+</button>
+            </div>
+            <span class="people-summary-hint" id="people-summary-hint">Somente você</span>
+          </div>
+
+          <!-- CAMPO DE ACOMPANHANTES (Exibido quando for mais de 1 pessoa) -->
+          <div class="form-group text-left" id="group-companions" style="display: none;">
+            <label for="rsvp-companions-names" class="input-label">Nome de quem vai com você (opcional):</label>
+            <input type="text" id="rsvp-companions-names" class="text-input" placeholder="Ex: Esposa e filhos">
+          </div>
+
+          <button type="submit" id="btn-rsvp-submit" class="btn btn-rsvp">
+            <!-- Ícone oficial do WhatsApp -->
+            <svg class="btn-icon-wa" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+            <span>Confirmar Presença no WhatsApp</span>
+          </button>
+        </form>
+
+        <p class="rsvp-hint">Preencha seu nome e a quantidade de pessoas para enviar a confirmação</p>
+
+      </div>
+    </section>
+
+
+    <!-- RODAPÉ -->
+    <footer class="footer-section">
+      <div class="footer-divider" aria-hidden="true">
+        <svg viewBox="0 0 100 16" preserveAspectRatio="none">
+          <path d="M0,8 Q25,0 50,8 T100,8" fill="none" stroke="currentColor" stroke-width="0.8"/>
+        </svg>
+      </div>
+
+      <p class="footer-quote">
+        "O amor não se mede, multiplica-se."
+      </p>
+
+      <p class="footer-parents">
+        Esperamos por você com muito amor e carinho!<br>
+        <strong>Alexandre &amp; Nyara</strong>
+      </p>
+
+      <p class="footer-copyright">
+        Chá Revelação • 2026
+      </p>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
