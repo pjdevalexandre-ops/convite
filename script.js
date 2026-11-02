@@ -68,7 +68,7 @@ const STATE = {
 /* ============================================================================
  * 3. INICIALIZAÇÃO DO DOM E CONFIGURAÇÃO DINÂMICA
  * ============================================================================ */
-document.addEventListener('DOMContentLoaded', () => {
+function initAll() {
   applyConfigToDOM();
   initEnvelope();
   initAudio();
@@ -79,7 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initMapButton();
   initRsvpForm();
   initConfettiCanvas();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAll);
+} else {
+  initAll();
+}
 
 /**
  * Preenche textos e links no HTML baseando-se no objeto CONFIG
@@ -106,38 +112,64 @@ function initEnvelope() {
   const overlay = document.getElementById('envelope-overlay');
   const card = document.getElementById('envelope-card');
 
-  if (!overlay || !card) return;
-
   const handleOpen = () => {
     if (STATE.isEnvelopeOpen) return;
     STATE.isEnvelopeOpen = true;
 
-    // Adiciona classe de animação de abertura da aba e do papel
-    overlay.classList.add('opening');
+    // Adiciona classe de animação de abertura
+    if (overlay) {
+      overlay.classList.add('opening');
+    }
 
-    // Inicia a música com interação do usuário (respeitando política de autoplay)
-    startMusicWithFadeIn();
+    // Inicia a música com interação do usuário (com proteção contra qualquer falha)
+    try {
+      startMusicWithFadeIn();
+    } catch (err) {
+      console.log('Música não pôde iniciar automaticamente:', err);
+    }
 
     // Pequena chuva de confete comemorativo de boas-vindas
-    setTimeout(() => {
-      triggerConfetti(50);
-    }, 400);
+    try {
+      setTimeout(() => {
+        triggerConfetti(50);
+      }, 350);
+    } catch (e) {}
 
-    // Fade out completo do overlay
+    // Fade out e remoção garantida do overlay para liberar a tela
     setTimeout(() => {
-      overlay.classList.add('opened');
+      if (overlay) {
+        overlay.classList.add('opened');
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 500);
+      }
       document.body.focus();
-    }, 900);
+    }, 750);
   };
 
-  // Suporte a toque/clique e teclado (Enter ou Espaço)
-  card.addEventListener('click', handleOpen);
-  card.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
+  // Torna acessível globalmente
+  window.abrirConviteManual = handleOpen;
+
+  if (overlay) {
+    overlay.addEventListener('click', handleOpen);
+    overlay.addEventListener('touchend', (e) => {
+      // Garante abertura instantânea no toque no celular
       handleOpen();
-    }
-  });
+    }, { passive: true });
+  }
+
+  if (card) {
+    card.addEventListener('click', handleOpen);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleOpen();
+      }
+    });
+  }
+}
 }
 
 /* ============================================================================

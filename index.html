@@ -48,12 +48,9 @@
     </span>
   </button>
 
-  <!-- CANVAS DE CONFETE SUAVE -->
-  <canvas id="confetti-canvas"></canvas>
-
   <!-- TELA DE ABERTURA: ENVELOPE ELEGANTE -->
-  <aside id="envelope-overlay" class="envelope-overlay" aria-label="Envelope do Convite">
-    <div class="envelope-container" id="envelope-card" role="button" tabindex="0" aria-label="Toque para abrir o convite">
+  <aside id="envelope-overlay" class="envelope-overlay" onclick="window.abrirConviteManual && window.abrirConviteManual()" aria-label="Envelope do Convite">
+    <div class="envelope-container" id="envelope-card" onclick="window.abrirConviteManual && window.abrirConviteManual()" role="button" tabindex="0" aria-label="Toque para abrir o convite">
       
       <!-- Detalhes de fundo flutuantes no envelope -->
       <div class="envelope-floating-decorations" aria-hidden="true">
@@ -573,6 +570,9 @@
     </footer>
 
   </main>
+
+  <!-- CANVAS DE CONFETE SUAVE -->
+  <canvas id="confetti-canvas"></canvas>
 
   <script src="script.js"></script>
 </body>
