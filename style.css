@@ -1150,6 +1150,29 @@ body {
   color: #FFFFFF;
 }
 
+/* Estado travado (voto único irreversível) */
+.poll-vote-btn.locked {
+  cursor: default !important;
+}
+
+.poll-vote-btn.locked:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.poll-vote-btn.not-selected {
+  opacity: 0.55;
+  filter: grayscale(0.25);
+  cursor: not-allowed !important;
+  background: #F4F1EA;
+}
+
+.poll-vote-btn.not-selected:hover {
+  transform: none !important;
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+}
+
 /* Campo de Nome */
 .form-group {
   display: flex;

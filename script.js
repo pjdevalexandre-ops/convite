@@ -46,12 +46,12 @@ const CONFIG = {
   // Volume inicial suave (0.0 a 1.0)
   musicInitialVolume: 0.4,
 
-  // Configuração da Enquete em Tempo Real na Nuvem (Votos 100% Reais)
+  // Configuração da Enquete em Tempo Real na Nuvem (Votos 100% Reais e Limpos)
   pollCloud: {
     enabled: true,
     baseUrl: 'https://countapi.mileshilliard.com/api/v1',
-    boyKey: 'cha_2026_revelacao_jorge_tales_alexandre_nyara',
-    girlKey: 'cha_2026_revelacao_kiara_maria_alexandre_nyara'
+    boyKey: 'cha_oficial_2026_jorge_tales_alexandre_nyara_clean',
+    girlKey: 'cha_oficial_2026_kiara_maria_alexandre_nyara_clean'
   }
 };
 
@@ -363,17 +363,35 @@ function initPollForm() {
     if (girlBarFill) girlBarFill.style.width = `${girlPct}%`;
   }
 
-  function applyButtonSelection(choice) {
-    if (choice === 'boy') {
+  const STORAGE_KEY_ALREADY_VOTED = 'cha_revelacao_voted_permanently_v2';
+  const STORAGE_KEY_CHOICE = 'cha_revelacao_voted_choice';
+
+  function lockVotingButtons(votedChoice) {
+    btnBoy.disabled = true;
+    btnGirl.disabled = true;
+    btnBoy.classList.add('locked');
+    btnGirl.classList.add('locked');
+
+    if (votedChoice === 'boy') {
       btnBoy.classList.add('selected');
       btnGirl.classList.remove('selected');
-      if (tagBoy) tagBoy.textContent = '✓ Seu palpite';
-      if (tagGirl) tagGirl.textContent = 'Mudar para menina';
-    } else if (choice === 'girl') {
+      btnGirl.classList.add('not-selected');
+      if (tagBoy) tagBoy.textContent = '✓ Seu voto registrado';
+      if (tagGirl) tagGirl.textContent = 'Opção não escolhida';
+    } else if (votedChoice === 'girl') {
       btnGirl.classList.add('selected');
       btnBoy.classList.remove('selected');
-      if (tagGirl) tagGirl.textContent = '✓ Seu palpite';
-      if (tagBoy) tagBoy.textContent = 'Mudar para menino';
+      btnBoy.classList.add('not-selected');
+      if (tagGirl) tagGirl.textContent = '✓ Seu voto registrado';
+      if (tagBoy) tagBoy.textContent = 'Opção não escolhida';
+    }
+
+    if (feedbackBox) {
+      feedbackBox.style.display = 'block';
+      const feedbackText = feedbackBox.querySelector('.poll-feedback-text');
+      if (feedbackText) {
+        feedbackText.textContent = '✨ Seu voto já foi registrado! Cada pessoa pode votar apenas uma vez.';
+      }
     }
   }
 
@@ -401,28 +419,23 @@ function initPollForm() {
     }
   }
 
-  // Disparo de voto ao clicar no botão
+  // Disparo de voto único ao clicar no botão
   async function handleVote(choice) {
-    const previousChoice = localStorage.getItem(STORAGE_KEY_CHOICE);
-
-    // Se já votou na mesma opção, apenas celebra com confete
-    if (previousChoice === choice) {
-      triggerConfetti(50);
-      if (feedbackBox) feedbackBox.style.display = 'block';
+    const alreadyVoted = localStorage.getItem(STORAGE_KEY_ALREADY_VOTED) === 'true';
+    if (alreadyVoted) {
+      // Bloqueio rigoroso: já votou, não faz absolutamente nada
       return;
     }
 
-    // Atualiza estado local imediatamente para feedback instantâneo
+    // Grava imediatamente o bloqueio permanente para este navegador
+    localStorage.setItem(STORAGE_KEY_ALREADY_VOTED, 'true');
     localStorage.setItem(STORAGE_KEY_CHOICE, choice);
-    applyButtonSelection(choice);
-    triggerConfetti(65);
 
-    if (feedbackBox) {
-      feedbackBox.style.display = 'block';
-      feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    // Trava os botões na hora
+    lockVotingButtons(choice);
+    triggerConfetti(70);
 
-    // Incrementa na interface na hora
+    // Incrementa na interface local instantaneamente
     if (choice === 'boy') {
       cloudBoyVotes++;
     } else {
@@ -452,10 +465,10 @@ function initPollForm() {
   }
 
   // Verifica se este dispositivo já votou anteriormente
+  const previouslyVoted = localStorage.getItem(STORAGE_KEY_ALREADY_VOTED) === 'true';
   const savedChoice = localStorage.getItem(STORAGE_KEY_CHOICE);
-  if (savedChoice) {
-    applyButtonSelection(savedChoice);
-    if (feedbackBox) feedbackBox.style.display = 'block';
+  if (previouslyVoted && savedChoice) {
+    lockVotingButtons(savedChoice);
   }
 
   // Eventos de clique nos botões
