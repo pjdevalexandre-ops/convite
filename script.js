@@ -46,10 +46,12 @@ const CONFIG = {
   // Volume inicial suave (0.0 a 1.0)
   musicInitialVolume: 0.4,
 
-  // Votos base iniciais para a barra de votação (equilíbrio inicial elegante)
-  pollBaseVotes: {
-    boy: 16,
-    girl: 16
+  // Configuração da Enquete em Tempo Real na Nuvem (Votos 100% Reais)
+  pollCloud: {
+    enabled: true,
+    baseUrl: 'https://countapi.mileshilliard.com/api/v1',
+    boyKey: 'cha_2026_revelacao_jorge_tales_alexandre_nyara',
+    girlKey: 'cha_2026_revelacao_kiara_maria_alexandre_nyara'
   }
 };
 
@@ -309,34 +311,25 @@ function initIntersectionObserver() {
 }
 
 /* ============================================================================
- * 8. FORMULÁRIO DE PALPITE (POLL) COM BARRINHA DE VOTAÇÃO LOCAL
+ * 8. ENQUETE COM VOTAÇÃO DIRETA (1 TOQUE) E BANCO EM NUVEM EM TEMPO REAL
  * ============================================================================ */
 function initPollForm() {
-  const form = document.getElementById('poll-form');
-  const nameInput = document.getElementById('voter-name');
+  const btnBoy = document.getElementById('btn-vote-boy');
+  const btnGirl = document.getElementById('btn-vote-girl');
+  const tagBoy = document.getElementById('tag-vote-boy');
+  const tagGirl = document.getElementById('tag-vote-girl');
   const feedbackBox = document.getElementById('poll-feedback');
-  const feedbackName = document.getElementById('poll-feedback-name');
-  const submitBtn = document.getElementById('submit-guess-btn');
 
-  if (!form || !nameInput) return;
+  if (!btnBoy || !btnGirl) return;
 
-  // Carrega votos salvos localmente
-  const STORAGE_KEY_VOTED = 'cha_revelacao_has_voted';
   const STORAGE_KEY_CHOICE = 'cha_revelacao_voted_choice';
-  const STORAGE_KEY_NAME = 'cha_revelacao_voter_name';
-  const STORAGE_KEY_BOY_EXTRA = 'cha_revelacao_extra_boy';
-  const STORAGE_KEY_GIRL_EXTRA = 'cha_revelacao_extra_girl';
 
-  let extraBoy = parseInt(localStorage.getItem(STORAGE_KEY_BOY_EXTRA) || '0', 10);
-  let extraGirl = parseInt(localStorage.getItem(STORAGE_KEY_GIRL_EXTRA) || '0', 10);
+  // Contadores reais (iniciam em zero)
+  let cloudBoyVotes = 0;
+  let cloudGirlVotes = 0;
 
   function updatePollDisplay() {
-    const totalBoy = CONFIG.pollBaseVotes.boy + extraBoy;
-    const totalGirl = CONFIG.pollBaseVotes.girl + extraGirl;
-    const totalVotes = totalBoy + totalGirl;
-
-    const boyPct = totalVotes > 0 ? Math.round((totalBoy / totalVotes) * 100) : 50;
-    const girlPct = 100 - boyPct;
+    const totalVotes = cloudBoyVotes + cloudGirlVotes;
 
     const boyPctEl = document.getElementById('boy-percent');
     const girlPctEl = document.getElementById('girl-percent');
@@ -346,94 +339,131 @@ function initPollForm() {
     const boyBarFill = document.getElementById('boy-bar-fill');
     const girlBarFill = document.getElementById('girl-bar-fill');
 
+    if (totalVotes === 0) {
+      if (boyPctEl) boyPctEl.textContent = '0%';
+      if (girlPctEl) girlPctEl.textContent = '0%';
+      if (boyCountEl) boyCountEl.textContent = '(0 votos)';
+      if (girlCountEl) girlCountEl.textContent = '(0 votos)';
+      if (totalVotesEl) totalVotesEl.textContent = 'Nenhum palpite ainda • Seja o primeiro a votar!';
+      if (boyBarFill) boyBarFill.style.width = '50%';
+      if (girlBarFill) girlBarFill.style.width = '50%';
+      return;
+    }
+
+    const boyPct = Math.round((cloudBoyVotes / totalVotes) * 100);
+    const girlPct = 100 - boyPct;
+
     if (boyPctEl) boyPctEl.textContent = `${boyPct}%`;
     if (girlPctEl) girlPctEl.textContent = `${girlPct}%`;
-    if (boyCountEl) boyCountEl.textContent = `(${totalBoy} votos)`;
-    if (girlCountEl) girlCountEl.textContent = `(${totalGirl} votos)`;
-    if (totalVotesEl) totalVotesEl.textContent = `Total: ${totalVotes} palpites`;
+    if (boyCountEl) boyCountEl.textContent = `(${cloudBoyVotes} ${cloudBoyVotes === 1 ? 'voto' : 'votos'})`;
+    if (girlCountEl) girlCountEl.textContent = `(${cloudGirlVotes} ${cloudGirlVotes === 1 ? 'voto' : 'votos'})`;
+    if (totalVotesEl) totalVotesEl.textContent = `Total: ${totalVotes} ${totalVotes === 1 ? 'palpite' : 'palpites'}`;
 
     if (boyBarFill) boyBarFill.style.width = `${boyPct}%`;
     if (girlBarFill) girlBarFill.style.width = `${girlPct}%`;
   }
 
-  // Render inicial
-  updatePollDisplay();
-
-  // Verifica se o usuário já havia votado antes
-  const previousVote = localStorage.getItem(STORAGE_KEY_CHOICE);
-  const previousName = localStorage.getItem(STORAGE_KEY_NAME);
-
-  if (previousVote && previousName) {
-    nameInput.value = previousName;
-    const radio = form.querySelector(`input[name="baby_gender_guess"][value="${previousVote}"]`);
-    if (radio) radio.checked = true;
-
-    if (feedbackBox && feedbackName) {
-      feedbackName.textContent = previousName;
-      feedbackBox.style.display = 'block';
-    }
-    if (submitBtn) {
-      submitBtn.querySelector('span').textContent = 'Atualizar Meu Palpite';
+  function applyButtonSelection(choice) {
+    if (choice === 'boy') {
+      btnBoy.classList.add('selected');
+      btnGirl.classList.remove('selected');
+      if (tagBoy) tagBoy.textContent = '✓ Seu palpite';
+      if (tagGirl) tagGirl.textContent = 'Mudar para menina';
+    } else if (choice === 'girl') {
+      btnGirl.classList.add('selected');
+      btnBoy.classList.remove('selected');
+      if (tagGirl) tagGirl.textContent = '✓ Seu palpite';
+      if (tagBoy) tagBoy.textContent = 'Mudar para menino';
     }
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const selectedOption = form.querySelector('input[name="baby_gender_guess"]:checked');
-    const guestName = nameInput.value.trim();
-
-    if (!selectedOption) {
-      alert('Por favor, selecione seu palpite (Menino ou Menina)!');
+  // Busca os números reais no banco de dados em nuvem
+  async function syncVotesFromCloud() {
+    if (!CONFIG.pollCloud || !CONFIG.pollCloud.enabled) {
+      updatePollDisplay();
       return;
     }
 
-    if (!guestName) {
-      nameInput.focus();
+    const { baseUrl, boyKey, girlKey } = CONFIG.pollCloud;
+
+    try {
+      const [resBoy, resGirl] = await Promise.all([
+        fetch(`${baseUrl}/get/${boyKey}`).then(r => r.ok ? r.json() : { value: 0 }).catch(() => ({ value: 0 })),
+        fetch(`${baseUrl}/get/${girlKey}`).then(r => r.ok ? r.json() : { value: 0 }).catch(() => ({ value: 0 }))
+      ]);
+
+      cloudBoyVotes = typeof resBoy.value === 'number' ? resBoy.value : 0;
+      cloudGirlVotes = typeof resGirl.value === 'number' ? resGirl.value : 0;
+      updatePollDisplay();
+    } catch (e) {
+      console.log('Modo offline/fallback na busca de votos:', e);
+      updatePollDisplay();
+    }
+  }
+
+  // Disparo de voto ao clicar no botão
+  async function handleVote(choice) {
+    const previousChoice = localStorage.getItem(STORAGE_KEY_CHOICE);
+
+    // Se já votou na mesma opção, apenas celebra com confete
+    if (previousChoice === choice) {
+      triggerConfetti(50);
+      if (feedbackBox) feedbackBox.style.display = 'block';
       return;
     }
 
-    const currentChoice = selectedOption.value; // 'boy' ou 'girl'
-    const hadVotedBefore = localStorage.getItem(STORAGE_KEY_VOTED) === 'true';
-    const oldChoice = localStorage.getItem(STORAGE_KEY_CHOICE);
-
-    // Ajusta contagem se estiver alterando o voto ou votando pela primeira vez
-    if (hadVotedBefore) {
-      if (oldChoice !== currentChoice) {
-        if (oldChoice === 'boy') extraBoy = Math.max(0, extraBoy - 1);
-        if (oldChoice === 'girl') extraGirl = Math.max(0, extraGirl - 1);
-
-        if (currentChoice === 'boy') extraBoy += 1;
-        if (currentChoice === 'girl') extraGirl += 1;
-      }
-    } else {
-      if (currentChoice === 'boy') extraBoy += 1;
-      if (currentChoice === 'girl') extraGirl += 1;
-    }
-
-    // Salva estado localmente
-    localStorage.setItem(STORAGE_KEY_VOTED, 'true');
-    localStorage.setItem(STORAGE_KEY_CHOICE, currentChoice);
-    localStorage.setItem(STORAGE_KEY_NAME, guestName);
-    localStorage.setItem(STORAGE_KEY_BOY_EXTRA, extraBoy.toString());
-    localStorage.setItem(STORAGE_KEY_GIRL_EXTRA, extraGirl.toString());
-
-    // Dispara confetes comemorativos
+    // Atualiza estado local imediatamente para feedback instantâneo
+    localStorage.setItem(STORAGE_KEY_CHOICE, choice);
+    applyButtonSelection(choice);
     triggerConfetti(65);
 
-    // Atualiza a barrinha de votação
+    if (feedbackBox) {
+      feedbackBox.style.display = 'block';
+      feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Incrementa na interface na hora
+    if (choice === 'boy') {
+      cloudBoyVotes++;
+    } else {
+      cloudGirlVotes++;
+    }
     updatePollDisplay();
 
-    // Exibe feedback gracioso na tela
-    if (feedbackBox && feedbackName) {
-      feedbackName.textContent = guestName;
-      feedbackBox.style.display = 'block';
-    }
+    // Envia o voto em tempo real para a nuvem
+    if (CONFIG.pollCloud && CONFIG.pollCloud.enabled) {
+      const { baseUrl, boyKey, girlKey } = CONFIG.pollCloud;
+      const keyToHit = choice === 'boy' ? boyKey : girlKey;
 
-    if (submitBtn) {
-      submitBtn.querySelector('span').textContent = 'Palpite Registrado! (Toque para atualizar)';
+      try {
+        const res = await fetch(`${baseUrl}/hit/${keyToHit}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (typeof data.value === 'number') {
+            if (choice === 'boy') cloudBoyVotes = data.value;
+            if (choice === 'girl') cloudGirlVotes = data.value;
+            updatePollDisplay();
+          }
+        }
+      } catch (err) {
+        console.log('Voto registrado localmente:', err);
+      }
     }
-  });
+  }
+
+  // Verifica se este dispositivo já votou anteriormente
+  const savedChoice = localStorage.getItem(STORAGE_KEY_CHOICE);
+  if (savedChoice) {
+    applyButtonSelection(savedChoice);
+    if (feedbackBox) feedbackBox.style.display = 'block';
+  }
+
+  // Eventos de clique nos botões
+  btnBoy.addEventListener('click', () => handleVote('boy'));
+  btnGirl.addEventListener('click', () => handleVote('girl'));
+
+  // Carrega os dados reais do banco em nuvem
+  syncVotesFromCloud();
 }
 
 /* ============================================================================

@@ -367,47 +367,27 @@
           <p class="section-subtitle">A intuição nunca falha! Conte para os pais quem você acha que vem aí:</p>
         </div>
 
-        <form id="poll-form" class="poll-form" onsubmit="return false;">
+        <div class="poll-voting-buttons">
           
-          <div class="poll-options-grid" role="radiogroup" aria-label="Escolha seu palpite">
-            
-            <label class="poll-choice-label boy-choice">
-              <input type="radio" name="baby_gender_guess" value="boy" class="poll-radio-input" required>
-              <div class="choice-content">
-                <span class="choice-badge">👦</span>
-                <span class="choice-title">Jorge Tales</span>
-                <span class="choice-sub">Menino</span>
-              </div>
-            </label>
-
-            <label class="poll-choice-label girl-choice">
-              <input type="radio" name="baby_gender_guess" value="girl" class="poll-radio-input">
-              <div class="choice-content">
-                <span class="choice-badge">👧</span>
-                <span class="choice-title">Kiara Maria</span>
-                <span class="choice-sub">Menina</span>
-              </div>
-            </label>
-
-          </div>
-
-          <div class="form-group">
-            <label for="voter-name" class="input-label">Seu Nome / Família:</label>
-            <input type="text" id="voter-name" class="text-input" placeholder="Ex: Titia Fernanda, Vovô Carlos..." required autocomplete="name">
-          </div>
-
-          <!-- Botão que registra o voto localmente na barrinha do convite -->
-          <button type="submit" id="submit-guess-btn" class="btn btn-primary btn-block">
-            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            <span>Confirmar Meu Palpite</span>
+          <button type="button" class="poll-vote-btn boy-vote-btn" id="btn-vote-boy">
+            <span class="vote-emoji">👦</span>
+            <strong class="vote-name">Jorge Tales</strong>
+            <span class="vote-sub">Menino</span>
+            <span class="vote-tag" id="tag-vote-boy">Toque para votar</span>
           </button>
-        </form>
+
+          <button type="button" class="poll-vote-btn girl-vote-btn" id="btn-vote-girl">
+            <span class="vote-emoji">👧</span>
+            <strong class="vote-name">Kiara Maria</strong>
+            <span class="vote-sub">Menina</span>
+            <span class="vote-tag" id="tag-vote-girl">Toque para votar</span>
+          </button>
+
+        </div>
 
         <!-- Feedback de Voto Realizado -->
         <div id="poll-feedback" class="poll-feedback" style="display: none;">
-          <p class="poll-feedback-text">✨ <span id="poll-feedback-name"></span>, seu palpite foi computado!</p>
+          <p class="poll-feedback-text">✨ Seu palpite foi registrado com sucesso!</p>
         </div>
 
         <!-- BARRINHA DE VOTAÇÃO (PLACAR DA INTUIÇÃO) -->
