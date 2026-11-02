@@ -53,7 +53,7 @@ const CONFIG = {
   eventTimeDisplay: 'A partir das 12:00',
   venueName: 'Vila Santo Antônio, Km 1',
   venueAddress: 'Ao lado do Restaurante Píer',
-  mapsUrl: 'https://www.google.com/maps?q=-1.6303670406341553,-47.48479080200195&z=17&hl=pt-BR',
+  mapsUrl: 'https://www.google.com/maps?q=-1.630367,-47.484791&z=18&hl=pt-BR',
   whatsappNumber: '5591984829252',
   ...
 };
