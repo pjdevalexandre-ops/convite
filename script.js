@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * CONVITE CHÁ REVELAÇÃO - ALEXANDRE & NYARA
- * JORGE TALES OU KIARA MARIA
+ * JORGE Thales OU KIARA MARIA
  * JavaScript Puro (Vanilla JS) - Sem dependências externas
  * ============================================================================
  */
@@ -15,7 +15,7 @@ const CONFIG = {
   parents: 'Alexandre & Nyara',
 
   // Nomes escolhidos para os bebês
-  boyName: 'Jorge Tales',
+  boyName: 'Jorge Thales',
   girlName: 'Kiara Maria',
 
   // Data e hora do evento (Formato ISO: AAAA-MM-DDTHH:MM:SS)
@@ -38,7 +38,7 @@ const CONFIG = {
   whatsappNumber: '5591984829252',
 
   // Mensagem padrão ao confirmar presença (RSVP)
-  rsvpMessage: 'Oi Alexandre e Nyara! Gostaria de confirmar minha presença no Chá Revelação! Mal posso esperar para descobrir se vem aí o Jorge Tales ou a Kiara Maria! 🤍👶',
+  rsvpMessage: 'Oi Alexandre e Nyara! Gostaria de confirmar minha presença no Chá Revelação! Mal posso esperar para descobrir se vem aí o Jorge Thales ou a Kiara Maria! 🤍👶',
 
   // MÚSICA DEFINIDA PELOS PAIS
   // Os convidados NÃO possuem opção nem controle de alterar este caminho.
@@ -51,7 +51,7 @@ const CONFIG = {
   pollCloud: {
     enabled: true,
     baseUrl: 'https://countapi.mileshilliard.com/api/v1',
-    boyKey: 'cha_oficial_2026_jorge_tales_alexandre_nyara_clean',
+    boyKey: 'cha_oficial_2026_jorge_Thales_alexandre_nyara_clean',
     girlKey: 'cha_oficial_2026_kiara_maria_alexandre_nyara_clean'
   }
 };
